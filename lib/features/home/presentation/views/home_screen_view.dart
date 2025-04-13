@@ -122,7 +122,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Image.asset(
-                          'assets/image/book.png',
+                          'assets/images/book.png',
                           color: isCoursesSelected ? Colors.black : Colors.white,
                         ),
                       ),

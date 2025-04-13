@@ -32,7 +32,7 @@ class ProfileController {
     if (path != null && File(path).existsSync()) {
       return FileImage(File(path));
     } else {
-      return const AssetImage('assets/image/download.jpeg');
+      return const AssetImage('assets/images/download.jpeg');
     }
   }
 }
