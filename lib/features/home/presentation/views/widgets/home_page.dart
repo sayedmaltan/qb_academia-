@@ -8,9 +8,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> sliderImages = [
-      'assets/image/dow  (1).png',
-      'assets/image/down.jpeg',
-      'assets/image/download.png',
+      'assets/images/dow  (1).png',
+      'assets/images/down.jpeg',
+      'assets/images/download.png',
     ];
 
     return Scaffold(
@@ -212,7 +212,7 @@ class HomePage extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Image.asset(
-                            'assets/image/بايثون-من-الصفر-للاحتراف.jpg',
+                            'assets/images/بايثون-من-الصفر-للاحتراف.jpg',
                             fit: BoxFit.cover,
                             width: double.infinity,
                           ),

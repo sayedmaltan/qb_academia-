@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qb_academia/features/home/presentation/views/widgets/profile_image_picker.dart';
-
 import 'change_language_dialog.dart';
 import 'edit_name_dialog.dart';
 
