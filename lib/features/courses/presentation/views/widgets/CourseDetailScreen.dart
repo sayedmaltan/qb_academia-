@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../data/models/course.dart';
 import 'course_videos_screen.dart';
 
-
 class CourseDetailScreen extends StatelessWidget {
   final Course course;
 
-  const CourseDetailScreen({super.key, required this.course});
+  const CourseDetailScreen({Key? key, required this.course}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class CourseDetailScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF9C19A),
         title: Text(
-          course.postTitle,
+          course.postTitle.isNotEmpty ? course.postTitle : 'تفاصيل الكورس',
           style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -26,9 +25,12 @@ class CourseDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
-              course.thumbnailUrl,
+              course.thumbnailUrl.isNotEmpty
+                  ? course.thumbnailUrl
+                  : 'https://via.placeholder.com/400x200?text=No+Image',
               fit: BoxFit.cover,
               width: double.infinity,
+              height: 220,
               errorBuilder: (_, __, ___) => const SizedBox(
                 height: 200,
                 child: Center(child: Icon(Icons.broken_image, size: 40)),
@@ -46,57 +48,86 @@ class CourseDetailScreen extends StatelessWidget {
               ),
             ),
             if (course.additionalInfo.courseBenefits.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  "فوائد الكورس: ${course.additionalInfo.courseBenefits.join(', ')}",
-                  style: const TextStyle(fontSize: 16, color: Colors.black87),
-                ),
+              _buildSection(
+                title: 'فوائد الكورس',
+                items: course.additionalInfo.courseBenefits,
               ),
             if (course.additionalInfo.courseRequirements.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "المتطلبات: ${course.additionalInfo.courseRequirements.join(', ')}",
-                  style: const TextStyle(fontSize: 16, color: Colors.black87),
-                ),
+              _buildSection(
+                title: 'المتطلبات',
+                items: course.additionalInfo.courseRequirements,
               ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF9C19A),
-                  foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                      transitionDuration: const Duration(milliseconds: 400),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          CourseVideosScreen(course: course),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: CurvedAnimation(
-                            parent: animation,
-                            curve: Curves.easeInOut,
-                          ),
-                          child: child,
-                        );
-                      },
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFF9C19A),
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  );
-                },
-                icon: const Icon(Icons.play_arrow),
-                label: const Text("ابدأ التعلّم الآن", style: TextStyle(fontSize: 16)),
+                    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        transitionDuration: const Duration(milliseconds: 400),
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            CourseVideosScreen(course: course),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut,
+                            ),
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.play_arrow),
+                  label: const Text("ابدأ التعلّم الآن"),
+                ),
               ),
             ),
+            const SizedBox(height: 24),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSection({required String title, required List<String> items}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "$title:",
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+          ),
+          const SizedBox(height: 6),
+          ...items.map(
+                (item) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.5),
+              child: Row(
+                children: [
+                  const Icon(Icons.check_circle_outline, color: Colors.green, size: 20),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(item, style: const TextStyle(fontSize: 15, color: Colors.black87)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

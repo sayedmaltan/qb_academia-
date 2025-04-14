@@ -5,23 +5,24 @@ import 'course_state.dart';
 
 class CourseCubit extends Cubit<CourseState> {
   CourseCubit() : super(CourseInitial());
-  ApiService apiService=ApiService();
 
-  static CourseCubit get(context) {
-    return BlocProvider.of(context);
-  }
+  final ApiService apiService = ApiService();
+
+  static CourseCubit get(context) => BlocProvider.of(context);
+
   Future<List<Course>> fetchCourses() async {
+    emit(CourseLoadingState());
     try {
-      emit(CourseLoadingState());
       final response = await apiService.get(
-        endPoint: 'http://mo7amy.org/ahmed/wp-json/tutor/v1/courses',
+        endPoint: 'tutor/v1/courses',
       );
       final courseResponse = CourseResponse.fromJson(response);
       emit(CourseSuccessState(courseResponse.data.posts));
-      return courseResponse.data.posts; // دي اللي محتاجينها فقط
+      return courseResponse.data.posts;
     } catch (e) {
-      print('Error: $e');
-      throw Exception('فشل تحميل الكورسات');
+      print('❌ Error while fetching courses: $e');
+      emit(CourseErrorState('فشل تحميل الكورسات 😓'));
+      return [];
     }
   }
 }

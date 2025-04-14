@@ -4,8 +4,7 @@ abstract class CourseState {}
 
 class CourseInitial extends CourseState {}
 
-class CourseLoadingState extends CourseState {
-}
+class CourseLoadingState extends CourseState {}
 
 class CourseSuccessState extends CourseState {
   final List<Course> courses;
