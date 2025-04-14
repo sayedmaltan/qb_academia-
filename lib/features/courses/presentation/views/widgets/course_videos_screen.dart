@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
 import '../../../data/models/course.dart';
 
 class CourseVideosScreen extends StatelessWidget {
@@ -31,18 +30,25 @@ class CourseVideosScreen extends StatelessWidget {
           style: TextStyle(color: Colors.black54, fontSize: 16),
         ),
       )
-          : ListView.separated(
+          : ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: videos.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 16),
         itemBuilder: (context, index) {
           final video = videos[index];
           final videoId = YoutubePlayer.convertUrlToId(video.sourceYoutube);
 
           if (videoId == null) {
-            return const Text(
-              "رابط فيديو غير صالح",
-              style: TextStyle(color: Colors.red),
+            return Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.red.shade100,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Text(
+                "رابط فيديو غير صالح ❌",
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
             );
           }
 
@@ -51,10 +57,12 @@ class CourseVideosScreen extends StatelessWidget {
             flags: const YoutubePlayerFlags(
               autoPlay: false,
               mute: false,
+              enableCaption: false,
             ),
           );
 
           return Container(
+            margin: const EdgeInsets.only(bottom: 24),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               color: Colors.white,
@@ -95,7 +103,7 @@ class CourseVideosScreen extends StatelessWidget {
                     children: [
                       const Expanded(
                         child: Text(
-                          "محتوى الفيديو هنا أو وصف بسيط",
+                          "فيديو تعليمي داخل هذا الكورس",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
