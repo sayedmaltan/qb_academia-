@@ -1,17 +1,30 @@
 import '../../../data/models/course.dart';
+import '../../../data/models/lessons_model.dart';
 
 abstract class CourseState {}
 
 class CourseInitial extends CourseState {}
 
-class CourseLoadingState extends CourseState {}
+class CourseIntroductionLoadingState extends CourseState {}
 
-class CourseSuccessState extends CourseState {
+class CourseIntroductionSuccessState extends CourseState {
   final List<Course> courses;
-  CourseSuccessState(this.courses);
+  CourseIntroductionSuccessState(this.courses);
 }
 
-class CourseErrorState extends CourseState {
+class CourseIntroductionErrorState extends CourseState {
   final String message;
-  CourseErrorState(this.message);
+  CourseIntroductionErrorState(this.message);
+}
+
+class CourseLessonsLoadingState extends CourseState {}
+
+class CourseLessonsSuccessState extends CourseState {
+  final LessonsModel lessonsModel;
+  CourseLessonsSuccessState(this.lessonsModel);
+}
+
+class CourseLessonsErrorState extends CourseState {
+  final String message;
+  CourseLessonsErrorState(this.message);
 }

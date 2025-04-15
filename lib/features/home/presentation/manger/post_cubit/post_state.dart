@@ -1,5 +1,6 @@
-import '../../../data/models/PostModel.dart';
 
+
+import '../../../../courses/data/models/PostModel.dart';
 
 abstract class PostState {}
 
@@ -7,9 +8,9 @@ class PostInitial extends PostState {}
 
 class PostLoading extends PostState {}
 
-class PostLoaded extends PostState {
+class PostSuccess extends PostState {
   final List<PostModel> posts;
-  PostLoaded(this.posts);
+  PostSuccess(this.posts);
 }
 
 class PostError extends PostState {

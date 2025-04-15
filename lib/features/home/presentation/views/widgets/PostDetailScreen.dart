@@ -1,13 +1,11 @@
-// 📁 lib/features/posts/presentation/views/post_detail_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import '../../../data/models/PostModel.dart';
+import '../../../../courses/data/models/PostModel.dart';
 
 class PostDetailScreen extends StatelessWidget {
   final PostModel post;
 
-  const PostDetailScreen({Key? key, required this.post}) : super(key: key);
+  const PostDetailScreen({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {

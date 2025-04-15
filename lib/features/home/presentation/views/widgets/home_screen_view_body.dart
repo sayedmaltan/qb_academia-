@@ -21,14 +21,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    CourseCubit.get(context).fetchCourses();
+    CourseCubit.get(context).getCoursesIntroduction();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CourseCubit, CourseState>(
       listener: (context, state) {
-        if (state is CourseSuccessState) {
+        if (state is CourseIntroductionSuccessState) {
           courses = state.courses;
         }
       },
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: const Color(0xFFF9C19A),
             iconTheme: const IconThemeData(color: Colors.black),
           ),
-          body: state is CourseLoadingState
+          body: state is CourseIntroductionLoadingState
               ? _buildShimmerList()
               : courses.isEmpty
               ? const Center(

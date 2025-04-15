@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/courses/presentation/manger/course_cubit/course_cubit..dart';
-import 'features/courses/presentation/manger/course_cubit/post_cubit.dart';
+import 'features/home/presentation/manger/post_cubit/post_cubit.dart';
 import 'features/splash/presentation/views/splash_screen.dart';
-import 'core/utils/api_post.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,10 +17,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<CourseCubit>(
-          create: (_) => CourseCubit()..fetchCourses(),
+          create: (_) => CourseCubit()..getCoursesIntroduction(),
         ),
         BlocProvider<PostCubit>(
-          create: (_) => PostCubit(ApiPostService())..fetchPosts(),
+          create: (_) => PostCubit()..getPosts(),
         ),
       ],
       child: MaterialApp(
