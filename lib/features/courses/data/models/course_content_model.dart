@@ -1,25 +1,25 @@
-class LessonsModel {
+class CourseContentModel {
   String? code;
   String? message;
   List<Data>? data;
 
-  LessonsModel({this.code, this.message, this.data});
+  CourseContentModel({this.code, this.message, this.data});
 
-  LessonsModel.fromJson(Map<String, dynamic> json) {
+  CourseContentModel.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     message = json['message'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['code'] = this.code;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -42,18 +42,18 @@ class Data {
     if (json['contents'] != null) {
       contents = <Contents>[];
       json['contents'].forEach((v) {
-        contents!.add(new Contents.fromJson(v));
+        contents!.add(Contents.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['summary'] = this.summary;
-    if (this.contents != null) {
-      data['contents'] = this.contents!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['summary'] = summary;
+    if (contents != null) {
+      data['contents'] = contents!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -139,31 +139,31 @@ class Contents {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ID'] = this.iD;
-    data['post_author'] = this.postAuthor;
-    data['post_date'] = this.postDate;
-    data['post_date_gmt'] = this.postDateGmt;
-    data['post_content'] = this.postContent;
-    data['post_title'] = this.postTitle;
-    data['post_excerpt'] = this.postExcerpt;
-    data['post_status'] = this.postStatus;
-    data['comment_status'] = this.commentStatus;
-    data['ping_status'] = this.pingStatus;
-    data['post_password'] = this.postPassword;
-    data['post_name'] = this.postName;
-    data['to_ping'] = this.toPing;
-    data['pinged'] = this.pinged;
-    data['post_modified'] = this.postModified;
-    data['post_modified_gmt'] = this.postModifiedGmt;
-    data['post_content_filtered'] = this.postContentFiltered;
-    data['post_parent'] = this.postParent;
-    data['guid'] = this.guid;
-    data['menu_order'] = this.menuOrder;
-    data['post_type'] = this.postType;
-    data['post_mime_type'] = this.postMimeType;
-    data['comment_count'] = this.commentCount;
-    data['filter'] = this.filter;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['ID'] = iD;
+    data['post_author'] = postAuthor;
+    data['post_date'] = postDate;
+    data['post_date_gmt'] = postDateGmt;
+    data['post_content'] = postContent;
+    data['post_title'] = postTitle;
+    data['post_excerpt'] = postExcerpt;
+    data['post_status'] = postStatus;
+    data['comment_status'] = commentStatus;
+    data['ping_status'] = pingStatus;
+    data['post_password'] = postPassword;
+    data['post_name'] = postName;
+    data['to_ping'] = toPing;
+    data['pinged'] = pinged;
+    data['post_modified'] = postModified;
+    data['post_modified_gmt'] = postModifiedGmt;
+    data['post_content_filtered'] = postContentFiltered;
+    data['post_parent'] = postParent;
+    data['guid'] = guid;
+    data['menu_order'] = menuOrder;
+    data['post_type'] = postType;
+    data['post_mime_type'] = postMimeType;
+    data['comment_count'] = commentCount;
+    data['filter'] = filter;
     return data;
   }
 }

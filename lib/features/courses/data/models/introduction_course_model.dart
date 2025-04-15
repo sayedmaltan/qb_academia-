@@ -1,12 +1,12 @@
-class CourseResponse {
+class IntroductionCourseModel {
   final String code;
   final String message;
   final CourseData data;
 
-  CourseResponse({required this.code, required this.message, required this.data});
+  IntroductionCourseModel({required this.code, required this.message, required this.data});
 
-  factory CourseResponse.fromJson(Map<String, dynamic> json) {
-    return CourseResponse(
+  factory IntroductionCourseModel.fromJson(Map<String, dynamic> json) {
+    return IntroductionCourseModel(
       code: json['code'],
       message: json['message'],
       data: CourseData.fromJson(json['data']),

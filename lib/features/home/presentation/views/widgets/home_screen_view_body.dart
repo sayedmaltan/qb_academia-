@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../courses/data/models/course.dart';
+import '../../../../courses/data/models/introduction_course_model.dart';
 import '../../../../courses/presentation/manger/course_cubit/course_cubit..dart';
 import '../../../../courses/presentation/manger/course_cubit/course_state.dart';
 import '../../../../courses/presentation/views/widgets/CourseDetailScreen.dart';
@@ -54,9 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           )
               : ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.only(bottom: 100,top: 18),
             itemCount: courses.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            separatorBuilder: (_, __) => const SizedBox(height: 18),
             itemBuilder: (context, index) {
               final course = courses[index];
               return GestureDetector(

@@ -1,4 +1,4 @@
-class PostModel {
+ class PostModel {
   final int id;
   final String date;
   final Guid guid;
