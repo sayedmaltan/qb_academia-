@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/course.dart';
+import '../../../data/models/introduction_course_model.dart';
 import '../../manger/course_cubit/course_cubit..dart';
 import 'course_videos_screen.dart';
 
@@ -76,7 +76,7 @@ class CourseDetailScreen extends StatelessWidget {
                   onPressed: () async {
                     CourseCubit courseCubit = CourseCubit.get(context);
                     print(course.id.toString());
-                  await courseCubit.getCoursesLessons(id: course.id.toString());
+                  await courseCubit.getCoursesLessons(courseContentsId: course.id.toString());
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         transitionDuration: const Duration(milliseconds: 400),
@@ -132,6 +132,7 @@ class CourseDetailScreen extends StatelessWidget {
             ),
           ),
         ],
+
       ),
     );
   }

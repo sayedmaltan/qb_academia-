@@ -1,5 +1,5 @@
-import '../../../data/models/course.dart';
-import '../../../data/models/lessons_model.dart';
+import '../../../data/models/introduction_course_model.dart';
+import '../../../data/models/lessons_topic_model.dart';
 
 abstract class CourseState {}
 
@@ -20,8 +20,8 @@ class CourseIntroductionErrorState extends CourseState {
 class CourseLessonsLoadingState extends CourseState {}
 
 class CourseLessonsSuccessState extends CourseState {
-  final LessonsModel lessonsModel;
-  CourseLessonsSuccessState(this.lessonsModel);
+  final LessonsTopicModel lessonsTopicModel;
+  CourseLessonsSuccessState(this.lessonsTopicModel);
 }
 
 class CourseLessonsErrorState extends CourseState {

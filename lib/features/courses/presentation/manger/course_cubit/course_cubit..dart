@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qb_academia/core/utils/api_service.dart';
-import 'package:qb_academia/features/courses/data/models/lessons_model.dart';
-import '../../../data/models/course.dart';
+import 'package:qb_academia/features/courses/data/models/course_content_model.dart';
+import 'package:qb_academia/features/courses/data/models/lessons_topic_model.dart';
+import '../../../data/models/introduction_course_model.dart';
 import 'course_state.dart';
 
 class CourseCubit extends Cubit<CourseState> {
@@ -18,9 +19,9 @@ class CourseCubit extends Cubit<CourseState> {
         endPoint: 'tutor/v1/courses',
       );
 
-      final courseResponse = CourseResponse.fromJson(introduction);
-      emit(CourseIntroductionSuccessState(courseResponse.data.posts));
-      return courseResponse.data.posts;
+      final introductionCourseResponse = IntroductionCourseModel.fromJson(introduction);
+      emit(CourseIntroductionSuccessState(introductionCourseResponse.data.posts));
+      return introductionCourseResponse.data.posts;
     } catch (e) {
       print('❌ Error while fetching courses: $e');
       emit(CourseIntroductionErrorState('فشل تحميل الكورسات 😓'));
@@ -28,20 +29,23 @@ class CourseCubit extends Cubit<CourseState> {
     }
   }
 
-  Future<LessonsModel> getCoursesLessons({required String id}) async {
+  Future<CourseContentModel> getCoursesLessons({required String courseContentsId}) async {
     emit(CourseLessonsLoadingState());
     try {
-      final lessons = await apiService.get(
-        endPoint: 'tutor/v1/course-contents/$id',
+      final courseContent = await apiService.get(
+        endPoint: 'tutor/v1/course-contents/$courseContentsId',
       );
-
-      LessonsModel lessonsModel=LessonsModel.fromJson(lessons);
-      emit(CourseLessonsSuccessState(lessonsModel));
-      return lessonsModel;
+      CourseContentModel courseContentModel=CourseContentModel.fromJson(courseContent);
+      final lessonsTopic = await apiService.get(
+        endPoint: 'tutor/v1/lessons?topic_id=${courseContentModel.data![0].id}',
+      );
+      LessonsTopicModel lessonsTopicModel=LessonsTopicModel.fromJson(lessonsTopic);
+      emit(CourseLessonsSuccessState(lessonsTopicModel));
+      return courseContentModel;
     } catch (e) {
       print('❌ Error while fetching courses: $e');
       emit(CourseLessonsErrorState('فشل تحميل الكورسات 😓'));
-      return LessonsModel();
+      return CourseContentModel();
     }
   }
 }
