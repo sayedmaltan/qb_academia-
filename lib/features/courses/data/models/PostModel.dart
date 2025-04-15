@@ -11,7 +11,7 @@ class PostModel {
   final Content content;
   final Content excerpt;
   final int featuredMedia;
-  final String? featuredImage; // الصورة من الـ embedded أو null
+  final String? featuredImage;
 
   PostModel({
     required this.id,

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../../data/models/course.dart';
+import '../../manger/course_cubit/course_cubit..dart';
 import 'course_videos_screen.dart';
 
 class CourseDetailScreen extends StatelessWidget {
   final Course course;
 
-  const CourseDetailScreen({Key? key, required this.course}) : super(key: key);
+  const CourseDetailScreen({super.key, required this.course});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +73,10 @@ class CourseDetailScreen extends StatelessWidget {
                     ),
                     textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    CourseCubit courseCubit = CourseCubit.get(context);
+                    print(course.id.toString());
+                  await courseCubit.getCoursesLessons(id: course.id.toString());
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         transitionDuration: const Duration(milliseconds: 400),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../courses/presentation/manger/course_cubit/post_cubit.dart';
-import '../../../../courses/presentation/manger/course_cubit/post_state.dart';
-import '../../../../courses/presentation/views/widgets/PostDetailScreen.dart';
+import 'PostDetailScreen.dart';
+import '../../manger/post_cubit/post_cubit.dart';
+import '../../manger/post_cubit/post_state.dart';
 import 'NotificationsScreen.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      PostCubit.get(context).fetchPosts();
+      PostCubit.get(context).getPosts();
     });
   }
 
@@ -33,11 +32,18 @@ class _HomePageState extends State<HomePage> {
         leading: Stack(
           children: [
             IconButton(
-              icon: const Icon(Icons.notifications_none, color: Colors.black, size: 34),
+              icon: const Icon(
+                Icons.notifications_none,
+                color: Colors.black,
+                size: 34,
+              ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => const NotificationsScreen(),
-                ));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationsScreen(),
+                  ),
+                );
               },
             ),
             Positioned(
@@ -45,9 +51,20 @@ class _HomePageState extends State<HomePage> {
               top: 6,
               child: Container(
                 padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
                 constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
-                child: const Text('1', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                child: const Text(
+                  '1',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ],
@@ -57,7 +74,15 @@ class _HomePageState extends State<HomePage> {
           children: const [
             Icon(Icons.school, color: Colors.black87, size: 24),
             SizedBox(width: 8),
-            Text('أكاديمية QB', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 20, letterSpacing: 1)),
+            Text(
+              'أكاديمية QB',
+              style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                letterSpacing: 1,
+              ),
+            ),
           ],
         ),
         iconTheme: const IconThemeData(color: Colors.black),
@@ -66,7 +91,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context, state) {
           return RefreshIndicator(
             onRefresh: () async {
-              await PostCubit.get(context).fetchPosts();
+              await PostCubit.get(context).getPosts();
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -81,9 +106,21 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("استكشف الكورسات", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          Text(
+                            "استكشف الكورسات",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           SizedBox(height: 6),
-                          Text("ابدأ رحلتك التعليمية من هنا ✨", style: TextStyle(fontSize: 16, color: Colors.black54)),
+                          Text(
+                            "ابدأ رحلتك التعليمية من هنا ✨",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black54,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -92,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                   /// ✅ سلايدر من الـ Posts API
                   if (state is PostLoading)
                     const Center(child: CircularProgressIndicator())
-                  else if (state is PostLoaded)
+                  else if (state is PostSuccess)
                     SizedBox(
                       height: 200,
                       child: PageView.builder(
@@ -101,12 +138,14 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (_, index) {
                           final post = state.posts[index];
                           return GestureDetector(
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => PostDetailScreen(post: post),
-                              ),
-                            ),
+                            onTap:
+                                () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (_) => PostDetailScreen(post: post),
+                                  ),
+                                ),
                             child: Container(
                               margin: const EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
@@ -119,7 +158,14 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ],
                                 image: DecorationImage(
-                                  image: NetworkImage(post.featuredImage ?? 'https://via.placeholder.com/300'),
+                                  image:
+                                      post.featuredImage != null
+                                          ? NetworkImage(
+                                            post.featuredImage!,
+                                          )
+                                          : AssetImage(
+                                            'assets/images/image-error.png',
+                                          ),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -135,14 +181,20 @@ class _HomePageState extends State<HomePage> {
                                 padding: const EdgeInsets.all(16),
                                 alignment: Alignment.bottomRight,
                                 child: Text(
-                                  post.title.rendered  ,
+                                  post.title.rendered,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    shadows: [Shadow(blurRadius: 5, color: Colors.black26, offset: Offset(0, 1))],
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 5,
+                                        color: Colors.black26,
+                                        offset: Offset(0, 1),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -160,33 +212,41 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Icon(Icons.new_releases, color: Colors.deepOrange),
                         SizedBox(width: 8),
-                        Text("أحدث الأخبار", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(
+                          "أحدث الأخبار",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ),
 
-                  if (state is PostLoaded)
+                  if (state is PostSuccess)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: state.posts.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                          childAspectRatio: 0.85,
-                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 12,
+                              crossAxisSpacing: 12,
+                              childAspectRatio: 0.85,
+                            ),
                         itemBuilder: (context, index) {
                           final post = state.posts[index];
                           return GestureDetector(
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => PostDetailScreen(post: post),
-                              ),
-                            ),
+                            onTap:
+                                () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PostDetailScreen(post: post),
+                                  ),
+                                ),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -197,11 +257,23 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: Image.network(
-                                      post.featuredImage ?? 'https://via.placeholder.com/300',
+                                    child: post.featuredImage!=null? Image.network(
+                                      post.featuredImage!,
                                       fit: BoxFit.cover,
                                       width: double.infinity,
-                                      errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.broken_image)),
+                                      errorBuilder:
+                                          (_, __, ___) => const Center(
+                                            child: Icon(Icons.broken_image),
+                                          ),
+                                    ):
+                                    Image.asset(
+                                      'assets/images/image-error.png',
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      errorBuilder:
+                                          (_, __, ___) => const Center(
+                                        child: Icon(Icons.broken_image),
+                                      ),
                                     ),
                                   ),
                                   Padding(
